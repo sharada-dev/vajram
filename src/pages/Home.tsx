@@ -43,7 +43,7 @@ export default function Home() {
     <div className="page home" ref={root}>
       {/* HERO */}
       <section className="home-hero" data-hero>
-        <div className="home-hero__bg"><img src="/assets/hero-door.jpg" alt="A heritage garden doorway at Vajram" /></div>
+        <div className="home-hero__bg"><img src={import.meta.env.BASE_URL + "assets/hero-door.jpg"} alt="A heritage garden doorway at Vajram" /></div>
         <div className="home-hero__scrim" />
         {!reduce && <Suspense fallback={null}><GoldDust /></Suspense>}
         <div className="vhero__veil" aria-hidden />

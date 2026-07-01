@@ -2,7 +2,7 @@
    Vajram — site content. Sourced from the approved design bundle.
    Single source of truth for every page.
    ===================================================================== */
-const A = "/assets";
+const A = import.meta.env.BASE_URL + "assets";
 
 export type NavItem = { label: string; to: string };
 export const NAV: NavItem[] = [
