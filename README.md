@@ -1,24 +1,32 @@
-# Vajram
+# React + TypeScript + Vite
 
-Website revamp for **Vajram Antiques & Gardens**.
+This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 
-This repository contains the new site design, imported from Claude Design
-(project `464b3a17-a518-4862-a1a9-7d55562871f2`, file `Vajram.dc.html`).
+Currently, two official plugins are available:
 
-## Contents
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-- `index.html` — the revamped site. It is a self-contained Claude Design
-  bundle (all styles, scripts, and images are inlined), so it renders
-  standalone with no build step or external assets.
+## React Compiler
 
-## Running locally
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-Open `index.html` directly in a browser, or serve the folder:
+## Expanding the Oxlint configuration
 
-```sh
-python -m http.server 8000
-# then visit http://localhost:8000
+If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+
+```json
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["react", "typescript", "oxc"],
+  "options": {
+    "typeAware": true
+  },
+  "rules": {
+    "react/rules-of-hooks": "error",
+    "react/only-export-components": ["warn", { "allowConstantExport": true }]
+  }
+}
 ```
 
-> Note: `index.html` is a bundled export (~27 MB) and requires JavaScript
-> to render.
+See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
