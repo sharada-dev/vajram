@@ -4,6 +4,7 @@ import { venueBySlug, PERFECT_FOR } from "../content";
 import { usePageMotion } from "../lib/motion";
 import Lightbox from "../components/Lightbox";
 import CoverflowGallery from "../components/CoverflowGallery";
+import ScatterGallery from "../components/ScatterGallery";
 import CountUp from "../components/CountUp";
 
 export default function VenueDetail() {
@@ -82,17 +83,21 @@ export default function VenueDetail() {
         </div>
       </section>
 
-      {/* GALLERY */}
-      <section className="block gallery">
-        <div className="wrap">
-          <div className="gallery__head" data-reveal>
-            <p className="kicker">The Gallery</p>
-            <h2>Explore <em>{venue.name}</em></h2>
-            <p>Across the courtyards, verandahs and gardens of the estate. Select any image to view it full-size.</p>
+      {/* GALLERY — Channarayapatna gets the scatter treatment; others keep coverflow */}
+      {venue.slug === "channarayapatna" ? (
+        <ScatterGallery images={venue.gallery} name={venue.name} onOpen={setLb} />
+      ) : (
+        <section className="block gallery">
+          <div className="wrap">
+            <div className="gallery__head" data-reveal>
+              <p className="kicker">The Gallery</p>
+              <h2>Explore <em>{venue.name}</em></h2>
+              <p>Across the courtyards, verandahs and gardens of the estate. Select any image to view it full-size.</p>
+            </div>
+            <CoverflowGallery images={venue.gallery} onOpen={setLb} />
           </div>
-          <CoverflowGallery images={venue.gallery} onOpen={setLb} />
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* CTA */}
       <section className="block cta">

@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useSmoothScroll } from "./lib/smooth";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
+import Home3D from "./pages/Home3D";
 import LifeEvents from "./pages/LifeEvents";
 import VenueDetail from "./pages/VenueDetail";
 import About from "./pages/About";
@@ -18,7 +19,8 @@ export default function App() {
     <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, "") || "/"}>
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home3D />} />
+          <Route path="/classic" element={<Home />} />
           <Route path="/life-events" element={<LifeEvents />} />
           <Route path="/life-events/:cat/:slug" element={<VenueDetail />} />
           <Route path="/shop" element={<Shop />} />
