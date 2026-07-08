@@ -1,28 +1,24 @@
-import { useLayoutEffect, useRef } from "react";
+import { lazy, Suspense, useLayoutEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useReducedMotion } from "framer-motion";
 import { usePageMotion } from "../lib/motion";
 import Magnetic from "../components/Magnetic";
-import VenueCard from "../components/VenueCard";
-import { VENUES, BRAND_BLURB } from "../content";
 import Home from "./Home";
+
+const GoldDust = lazy(() => import("../components/GoldDust"));
 
 gsap.registerPlugin(ScrollTrigger);
 
 /* =====================================================================
-   Cinematic home — alethia.earth's homepage grammar, Vajram's skin.
-
-   Act 1  Full-bleed arrival: garden doorway fills the viewport, mono
-          eyebrow top-left, statement text over it; the image ZOOMS IN
-          as you scroll while pinned.
-   Act 2  A cream editorial sheet slides up over it: centered headline
-          with a scattered collage of photos + stat chips, each drifting
-          at its own parallax speed and gently scaling.
-   Act 3  Full-bleed zoom-OUT break: the aerial garden reveals from 1.35
-          scale to full frame, a single line rising over it.
-   Act 4  The three estates.   Act 5  Invitation.
+   Home — implemented from "Vajram Home.dc.html" (Claude Design).
+   Act I   Arrival: pinned hero-reveal, giant VAJRAM wordmark, gold dust.
+   Act II  Heritage: white sheet slides over; drifting photo cards + stat
+           chips around a centered headline.
+   Act III Gardens: pinned zoom-out reveal, headline rises mid-pin.
+   Act IV  Estates: terracotta band, three editorial estate cards.
+   Act V   Invitation: terracotta close.
    Reduced motion → classic home.
    ===================================================================== */
 
@@ -30,26 +26,35 @@ const A = import.meta.env.BASE_URL + "assets";
 
 const CHAPTERS = ["Arrival", "Heritage", "Gardens", "Estates", "Invitation"];
 
-/* Scatter collage — image cards and stat chips, alethia's bento-scatter.
-   speed: parallax multiplier (± drift as the section passes). */
-const CARDS = [
-  { kind: "img", src: `${A}/story-lakshmi.png`,       cls: "c1", speed: -1.1, alt: "Thanjavur Lakshmi painting" },
-  { kind: "chip", cls: "c2 chip-dark", n: "170", l: "guests · Backyard, Bengaluru" },
-  { kind: "img", src: `${A}/life/chan-02.jpg`,        cls: "c3", speed: 1.3,  alt: "Thotti Mane courtyard" },
-  { kind: "img", src: `${A}/prod-stone-buddha.png`,   cls: "c4", speed: -0.7, alt: "Stone Buddha" },
-  { kind: "chip", cls: "c5 chip-gold", n: "ತೊಟ್ಟಿ ಮನೆ", l: "courtyard homes, kept alive" },
-  { kind: "img", src: `${A}/life/kolur-entrance.jpg`, cls: "c6", speed: 0.9,  alt: "Kolur cottage entrance" },
-  { kind: "chip", cls: "c7 chip-dark", n: "6 – 170", l: "guests · three estates" },
-  { kind: "img", src: `${A}/life-backyard.png`,       cls: "c8", speed: -1.4, alt: "Backyard gardens" },
-] as const;
+type Card =
+  | { kind: "img"; src: string; alt: string; left: string; top: number; w: string; ar: string; speed: number }
+  | { kind: "chip"; n: string; l: string; left: string; top: number; speed: number };
+
+/* positions from the design source (1500px-tall field) */
+const CARDS: Card[] = [
+  { kind: "img", src: `${A}/story-buddha.png`,   alt: "Stone Buddha",        left: "75%",   top: 120,  w: "clamp(150px,19vw,280px)", ar: "7/9",   speed: 1.1 },
+  { kind: "img", src: `${A}/story-lakshmi.png`,  alt: "Thanjavur Lakshmi",   left: "5.5%",  top: 180,  w: "clamp(130px,16vw,240px)", ar: "3/4",   speed: -0.7 },
+  { kind: "img", src: `${A}/life/chan-02.jpg`,   alt: "Courtyard pillars",   left: "62.5%", top: 660,  w: "clamp(180px,25vw,360px)", ar: "18/13", speed: -0.6 },
+  { kind: "img", src: `${A}/life/space-02.jpg`,  alt: "Antique spaces",      left: "9.7%",  top: 640,  w: "clamp(190px,26vw,380px)", ar: "19/14", speed: 0.85 },
+  { kind: "img", src: `${A}/prod-stone-pot.png`, alt: "Carved stone pot",    left: "41%",   top: 790,  w: "clamp(140px,18vw,260px)", ar: "13/17", speed: 1.4 },
+  { kind: "chip", n: "170", l: "Guests Hosted",        left: "79%",   top: 560,  speed: -1.1 },
+  { kind: "chip", n: "03",  l: "Estates in Karnataka", left: "26.4%", top: 560,  speed: 1.2 },
+  { kind: "chip", n: "EST.", l: "Bengaluru · Karnataka", left: "80%", top: 1080, speed: 0.7 },
+];
+
+const ESTATES = [
+  { src: `${A}/life-backyard.png`,      name: "Backyard Antiques & Gardens", meta: "Bengaluru · 170 guests",   to: "/life-events/vajram-spaces/backyard" },
+  { src: `${A}/life/chan-01.jpg`,       name: "Channarayapatna",             meta: "Thotti Mane · 25 guests",  to: "/life-events/vajram-farms/channarayapatna" },
+  { src: `${A}/life/kolur-entrance.jpg`, name: "Kolur",                      meta: "Heritage cottage · 6 guests", to: "/life-events/vajram-farms/kolur" },
+];
 
 export default function Home3D() {
   const reduce = useReducedMotion();
   if (reduce) return <Home />;
-  return <CinematicHome />;
+  return <DesignHome />;
 }
 
-function CinematicHome() {
+function DesignHome() {
   const root = useRef<HTMLDivElement>(null);
   const fillRef = useRef<HTMLDivElement>(null);
   const railRef = useRef<HTMLDivElement>(null);
@@ -58,9 +63,8 @@ function CinematicHome() {
   useLayoutEffect(() => {
     if (!root.current) return;
     const ctx = gsap.context(() => {
-      // page progress → rail
       ScrollTrigger.create({
-        trigger: ".alhome", start: "top top", end: "bottom bottom",
+        trigger: ".vd", start: "top top", end: "bottom bottom",
         onUpdate: (self) => {
           if (fillRef.current) fillRef.current.style.transform = `scaleY(${self.progress})`;
           if (railRef.current) {
@@ -71,122 +75,122 @@ function CinematicHome() {
         },
       });
 
-      // ACT 1 — pinned hero: image zooms IN, statement drifts and fades late
-      gsap.fromTo(".al-hero__img", { scale: 1 }, {
+      // Act I — hero zooms in through the pin
+      gsap.fromTo(".vd-hero__img", { scale: 1 }, {
         scale: 1.22, ease: "none",
-        scrollTrigger: { trigger: ".al-hero", start: "top top", end: "bottom top", scrub: true },
-      });
-      gsap.to(".al-hero__inner", {
-        autoAlpha: 0, y: -60, ease: "none",
-        scrollTrigger: { trigger: ".al-hero", start: "40% top", end: "bottom top", scrub: true },
+        scrollTrigger: { trigger: ".vd-arrival", start: "top top", end: "bottom top", scrub: true },
       });
 
-      // ACT 2 — scatter cards: per-card parallax drift + gentle zoom through
-      gsap.utils.toArray<HTMLElement>(".al-card").forEach((el) => {
+      // Act II — cards drift + settle in
+      gsap.utils.toArray<HTMLElement>(".vd-card").forEach((el) => {
         const speed = parseFloat(el.dataset.speed || "0");
         if (speed) {
-          gsap.fromTo(el, { yPercent: 26 * speed }, {
-            yPercent: -26 * speed, ease: "none",
-            scrollTrigger: { trigger: ".al-scatter", start: "top bottom", end: "bottom top", scrub: true },
+          gsap.fromTo(el, { yPercent: 24 * speed }, {
+            yPercent: -24 * speed, ease: "none",
+            scrollTrigger: { trigger: ".vd-heritage", start: "top bottom", end: "bottom top", scrub: true },
           });
         }
-        gsap.fromTo(el, { scale: 0.92 }, {
-          scale: 1.04, ease: "none",
-          scrollTrigger: { trigger: ".al-scatter", start: "top 85%", end: "bottom 15%", scrub: true },
+        gsap.fromTo(el, { scale: 0.86, autoAlpha: 0 }, {
+          scale: 1, autoAlpha: 1, ease: "none",
+          scrollTrigger: { trigger: el, start: "top 105%", end: "top 55%", scrub: true },
         });
       });
 
-      // ACT 3 — pinned break: aerial garden zooms OUT from 1.35 → 1, then eases past
-      gsap.fromTo(".al-break__img", { scale: 1.35 }, {
+      // Act III — zoom-out reveal then ease past; headline rises mid-pin
+      gsap.fromTo(".vd-gardens__img", { scale: 1.35 }, {
         scale: 1, ease: "none",
-        scrollTrigger: { trigger: ".al-break", start: "top bottom", end: "top top", scrub: true },
+        scrollTrigger: { trigger: ".vd-gardens", start: "top bottom", end: "top top", scrub: true },
       });
-      gsap.fromTo(".al-break__img", { scale: 1 }, {
+      gsap.fromTo(".vd-gardens__img", { scale: 1 }, {
         scale: 1.12, ease: "none", immediateRender: false,
-        scrollTrigger: { trigger: ".al-break", start: "top top", end: "bottom top", scrub: true },
+        scrollTrigger: { trigger: ".vd-gardens", start: "top top", end: "bottom top", scrub: true },
       });
-      gsap.fromTo(".al-break__line", { autoAlpha: 0, y: 70 }, {
+      gsap.fromTo(".vd-gardens__head", { autoAlpha: 0, y: 46 }, {
         autoAlpha: 1, y: 0, ease: "none",
-        scrollTrigger: { trigger: ".al-break", start: "top 25%", end: "top -35%", scrub: true },
+        scrollTrigger: { trigger: ".vd-gardens", start: "top 20%", end: "top -40%", scrub: true },
       });
     }, root);
     return () => ctx.revert();
   }, []);
 
   return (
-    <div className="page alhome" ref={root}>
-      {/* ================= ACT 1 · ARRIVAL ================= */}
-      <section className="al-hero">
-        <div className="al-hero__pin">
-          <img className="al-hero__img" src={`${A}/hero-door.jpg`} alt="The garden doorway at Vajram" />
-          <div className="al-hero__scrim" aria-hidden />
-          <div className="vhero__veil" aria-hidden />
-          <div className="al-hero__inner" data-hero>
-            <p className="al-mono" data-anim>Antiques · Gardens ·<br />Gatherings —<br />Bengaluru, Karnataka</p>
-            <div className="al-hero__statement hero-title">
-              <p>Born from a deep reverence for India's artisanal heritage — spaces where the past is not preserved, but breathed into everyday life.</p>
-            </div>
-            <div className="al-hero__brand" data-anim>Vajram</div>
-            <div className="j3d-hero__cue al-hero__cue" data-anim>Scroll</div>
+    <div className="page vd" ref={root}>
+      {/* ============ ACT I · ARRIVAL ============ */}
+      <section className="vd-arrival">
+        <div className="vd-pin">
+          <img className="vd-hero__img" src={`${A}/hero-reveal.png`} alt="Vajram heritage entrance" />
+          <div className="vd-scrim" aria-hidden />
+          <Suspense fallback={null}><GoldDust /></Suspense>
+          <div className="vd-hero__inner" data-hero>
+            <div className="vhero__veil" aria-hidden />
+            <p className="vd-mono vd-eyebrow" data-anim>Antiques &amp; Gardens</p>
+            <div className="vd-wordmark hero-title">VAJRAM</div>
+            <div className="vd-rule" aria-hidden />
+            <p className="vd-mono vd-tagline" data-anim>The past, breathed into everyday life</p>
           </div>
+          <div className="vd-cue" aria-hidden><span className="vd-mono">Scroll</span><i /></div>
         </div>
       </section>
 
-      {/* ================= ACT 2 · HERITAGE (cream sheet + scatter) ================= */}
-      <section className="al-scatter">
-        <div className="al-scatter__center">
-          <span className="al-pill" data-reveal>The Vajram Difference</span>
-          <h2 data-split>Where craft, garden and gathering meet.</h2>
-          <p className="al-scatter__sub" data-reveal>{BRAND_BLURB}</p>
+      {/* ============ ACT II · HERITAGE ============ */}
+      <section className="vd-heritage">
+        <div className="vd-heritage__center">
+          <p className="vd-mono vd-k" data-reveal>Act II — Heritage</p>
+          <h2 data-split>Collected, carved, and kept alive.</h2>
+          <p className="vd-sub" data-reveal>Idols, stonework and Tanjore paintings — gathered not as relics behind glass, but as living things placed where people gather.</p>
         </div>
-        {CARDS.map((c) =>
+        {CARDS.map((c, i) =>
           c.kind === "img" ? (
-            <figure key={c.cls} className={`al-card al-card--img ${c.cls}`} data-speed={c.speed}>
+            <figure key={i} className="vd-card vd-card--img" data-speed={c.speed}
+              style={{ left: c.left, top: c.top, width: c.w, aspectRatio: c.ar }}>
               <img src={c.src} alt={c.alt} loading="lazy" />
             </figure>
           ) : (
-            <div key={c.cls} className={`al-card al-card--chip ${c.cls}`}>
-              <b>{c.n}</b><span>{c.l}</span>
+            <div key={i} className="vd-card vd-card--chip" data-speed={c.speed} style={{ left: c.left, top: c.top }}>
+              <b>{c.n}</b><span className="vd-mono">{c.l}</span>
             </div>
           )
         )}
       </section>
 
-      {/* ================= ACT 3 · GARDENS (zoom-out break) ================= */}
-      <section className="al-break">
-        <div className="al-break__pin">
-          <img className="al-break__img" src={`${A}/life/space-aerial.jpg`} alt="Aerial view of the Vajram gardens" />
-          <div className="al-break__scrim" aria-hidden />
-          <div className="al-break__line">
-            <p className="al-mono">02 · Gardens</p>
-            <h2>A green sanctuary<br />inside the city.</h2>
+      {/* ============ ACT III · GARDENS ============ */}
+      <section className="vd-gardens">
+        <div className="vd-pin">
+          <img className="vd-gardens__img" src={`${A}/life/farms-entrance.jpg`} alt="Vajram farm gardens" />
+          <div className="vd-scrim" aria-hidden />
+          <div className="vd-gardens__head">
+            <p className="vd-mono vd-k vd-k--gold">Act III — Gardens</p>
+            <h2>Organic farms,<br />living courtyards.</h2>
           </div>
         </div>
       </section>
 
-      {/* ================= ACT 4 · ESTATES ================= */}
-      <section className="block al-estates">
-        <div className="wrap">
-          <div className="al-estates__head" data-reveal>
-            <span className="al-pill">Life Events</span>
-            <h2 data-split>Three estates for the moments that matter.</h2>
-          </div>
-          <div className="venue-grid">
-            {VENUES.map((v) => <VenueCard key={v.slug} venue={v} />)}
-          </div>
+      {/* ============ ACT IV · ESTATES ============ */}
+      <section className="vd-estates">
+        <div className="vd-estates__head">
+          <span className="vd-pill vd-mono" data-reveal>Life Events</span>
+          <span className="vd-mono vd-actlabel">Act IV</span>
+        </div>
+        <h2 data-split>Three estates for the moments that matter.</h2>
+        <div className="vd-estates__grid">
+          {ESTATES.map((e) => (
+            <Link key={e.name} className="vd-estate" to={e.to}>
+              <div className="vd-estate__media"><img src={e.src} alt={e.name} loading="lazy" /><span className="vd-estate__scrim" /></div>
+              <h3>{e.name}</h3>
+              <p className="vd-mono">{e.meta}</p>
+            </Link>
+          ))}
         </div>
       </section>
 
-      {/* ================= ACT 5 · INVITATION ================= */}
-      <section className="block al-cta">
-        <div className="wrap" data-reveal>
-          <span className="al-pill">Begin Yours</span>
-          <h2 data-split>Every corner tells a story.</h2>
-          <p className="al-cta__sub">Explore the spaces and farms, or tell us about the gathering you're dreaming of.</p>
-          <div className="al-cta__actions">
-            <Magnetic><Link className="btn-gold" to="/life-events">Explore Spaces &amp; Farms</Link></Magnetic>
-            <Magnetic><Link className="btn-solid" to="/reach-us">Check Availability</Link></Magnetic>
-          </div>
+      {/* ============ ACT V · INVITATION ============ */}
+      <section className="vd-invite">
+        <p className="vd-mono vd-k vd-k--goldsoft" data-reveal>Act V — Invitation</p>
+        <h2 data-split>Begin your Vajram story.</h2>
+        <p className="vd-invite__sub" data-reveal>Walk the gardens, sit beneath the carved pillars, and let the estates speak for themselves.</p>
+        <div className="vd-invite__actions" data-reveal>
+          <Magnetic><Link className="vd-btn vd-mono" to="/reach-us">Check Availability</Link></Magnetic>
+          <Magnetic><Link className="vd-btn vd-btn--ghost vd-mono" to="/reach-us">Write to Us</Link></Magnetic>
         </div>
       </section>
 

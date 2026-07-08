@@ -1,19 +1,24 @@
 /* =====================================================================
-   Vajram — design tokens + base. Forest / cream / gold, serif + sans.
+   Vajram — design tokens (from the Claude Design system).
+   Terracotta / parchment / brass on white; warm ink text.
    ===================================================================== */
 :root {
-  --cream: #f4f1e9;
-  --cream-2: #faf8f2;
-  --forest: #1f2a21;
-  --forest-2: #2e3d30;
-  --gold: #b8924a;
-  --gold-soft: #cdb07a;
-  --ink: #20251f;
-  --muted: #6b6f63;
+  --cream: #FFFFFF;        /* page ground */
+  --cream-2: #FAF6EF;      /* warm off-white sections */
+  --forest: #2A1A12;       /* warm ink — dark surfaces & headings */
+  --forest-2: #3E2A1E;
+  --gold: #D89A44;         /* brass */
+  --gold-soft: #E9C888;    /* pale brass */
+  --ink: #2A1A12;
+  --muted: #7A6250;        /* warm taupe body text */
+  --terra: #9A3E26;        /* terracotta — primary accent */
+  --terra-deep: #7C2F1C;
+  --parch: #F4E4C8;        /* parchment — text on dark/terracotta */
 
   --maxw: 1180px;
   --r-lg: 22px;
   --r-md: 14px;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }

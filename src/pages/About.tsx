@@ -1,55 +1,69 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
-import { HOME, BRAND_BLURB } from "../content";
 import { usePageMotion } from "../lib/motion";
-import PageBanner from "../components/PageBanner";
+import Magnetic from "../components/Magnetic";
+import { HOME, JOURNAL } from "../content";
 
-const PILLARS = [
-  { n: "01", t: "Antiques", d: "Curated heritage objects — Tanjore paintings, carved stone, antique furniture — cared for as living things, not relics behind glass." },
-  { n: "02", t: "Gardens", d: "Thriving organic farms and green sanctuaries where craft and landscape meet, beyond the edge of the city." },
-  { n: "03", t: "Gatherings", d: "Spaces made for people to come together — ceremonies, celebrations and quiet retreats alike." },
-];
+/* Implemented from "Vajram About.dc.html" (Claude Design). */
+
+const A = import.meta.env.BASE_URL + "assets";
 
 export default function About() {
   const root = useRef<HTMLDivElement>(null);
   usePageMotion(root, []);
+  const post = JOURNAL[0];
+
   return (
-    <div className="page" ref={root}>
-      <PageBanner crumbs={[{ label: "Home", to: "/" }, { label: "About Us" }]} title="Our" accent="Story" />
-
-      <section className="block intro-center">
-        <div className="wrap" data-reveal>
-          <p className="kicker">The Vajram Difference</p>
-          <h2>Heritage, breathed into everyday life.</h2>
-          <p className="lead">{BRAND_BLURB}</p>
-          <p className="lead">{HOME.storyParas[1]}</p>
+    <div className="page vab" ref={root}>
+      {/* hero */}
+      <section className="vle-hero vab-hero" data-hero>
+        <img src={`${A}/shop-hero-interior.png`} alt="Inside the Vajram antique collection" />
+        <div className="vd-scrim" aria-hidden />
+        <div className="vhero__veil" aria-hidden />
+        <div className="vle-hero__inner">
+          <p className="vd-mono vd-eyebrow" data-anim>About Vajram</p>
+          <h1 data-split>A reverence, kept alive.</h1>
+          <div className="vd-rule" aria-hidden />
         </div>
       </section>
 
-      <section className="block story story--about">
-        <div className="story__media" data-reveal>
-          <div className="story__imgA"><img src={HOME.storyImgA} alt="Thanjavur Lakshmi painting" /></div>
-          <div className="story__imgB"><img src={HOME.storyImgB} alt="Stone Buddha statue" /></div>
-          <div className="story__badge"><span>Est.<br />Heritage</span></div>
+      {/* story */}
+      <section className="vab-story">
+        <div className="vab-story__media">
+          <div className="vab-story__imgA" data-reveal><img src={`${A}/story-lakshmi.png`} alt="Thanjavur Lakshmi painting" /></div>
+          <div className="vab-story__imgB" data-reveal><img src={`${A}/story-buddha.png`} alt="Stone Buddha statue" /></div>
         </div>
-        <div className="story__text">
-          <p className="kicker" data-reveal>What We Believe</p>
-          <h2 data-reveal>The past is not preserved.<br /><em>It is lived in.</em></h2>
-          <p className="story__p" data-reveal>From curated antique spaces to thriving organic farms, every corner of Vajram tells a story — and invites you into it.</p>
-          <Link className="btn-gold" to="/life-events" data-reveal>Explore Life Events</Link>
+        <div>
+          <p className="vd-mono vd-k" data-reveal>Our Story</p>
+          <h2 data-reveal>The Vajram <em>difference</em></h2>
+          {HOME.storyParas.map((p, i) => <p className="vle-body" data-reveal key={i}>{p}</p>)}
+          <Link className="vle-more vd-mono" to="/life-events" data-reveal>Visit the Estates</Link>
         </div>
       </section>
 
-      <section className="block occasions">
-        <div className="wrap">
-          <div className="occasions__head" data-reveal><div><p className="kicker">What We Do</p><h2>Three threads, one philosophy.</h2></div></div>
-          <div className="feature-grid">
-            {PILLARS.map((p) => (
-              <div className="feature" data-reveal key={p.n}>
-                <span className="feature__n">{p.n}</span><h3>{p.t}</h3><div className="feature__line" /><p>{p.d}</p>
-              </div>
-            ))}
-          </div>
+      {/* quote band */}
+      <section className="vab-quote">
+        <p data-split>"Heritage, for us, is not preserved. It is breathed into everyday life."</p>
+      </section>
+
+      {/* journal */}
+      <section className="vab-journal">
+        <div>
+          <p className="vd-mono vd-k" data-reveal>From the Journal</p>
+          <h2 data-reveal>{post.title}</h2>
+          <p className="vle-body" data-reveal>{post.excerpt}</p>
+          <p className="vd-mono vle-meta" data-reveal>{post.month} {post.day} · Journal</p>
+          <Link className="vle-more vd-mono" to={`/journals/${post.slug}`} data-reveal>Read the story</Link>
+        </div>
+        <div className="vle-split__img tall" data-reveal><img src={`${A}/prod-stone-buddha.png`} alt="Hand-carved stone sculpture" loading="lazy" /></div>
+      </section>
+
+      {/* CTA */}
+      <section className="vd-invite">
+        <h2 data-split>Come walk the gardens.</h2>
+        <p className="vd-invite__sub" data-reveal>The best way to know Vajram is to visit it.</p>
+        <div className="vd-invite__actions" data-reveal>
+          <Magnetic><Link className="vd-btn vd-mono" to="/reach-us">Plan a Visit</Link></Magnetic>
         </div>
       </section>
     </div>

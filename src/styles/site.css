@@ -460,7 +460,7 @@ body.theme-indigo .site-header.is-scrolled { background: rgba(244,238,226,.94); 
 
 /* =================== ALETHIA-GRAMMAR HOME =================== */
 .alhome { background: var(--cream); }
-.al-mono { font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono", Menlo, monospace; font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; line-height: 1.7; }
+.al-mono { font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace; font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; line-height: 1.7; }
 
 /* --- Act 1 · pinned full-bleed hero, image zooms in --- */
 .al-hero { height: 200vh; position: relative; }
@@ -479,14 +479,14 @@ body.theme-indigo .site-header.is-scrolled { background: rgba(244,238,226,.94); 
 .al-scatter__center { position: relative; z-index: 6; max-width: 720px; margin: 0 auto; text-align: center; padding: 26vh 0 30vh; }
 .al-scatter__center h2 { font-size: clamp(2.3rem,5vw,3.9rem); margin: 1.3rem 0 1.4rem; }
 .al-scatter__sub { color: var(--muted); line-height: 1.85; font-size: 1.05rem; max-width: 54ch; margin: 0 auto; }
-.al-pill { display: inline-block; font-family: ui-monospace, Menlo, monospace; font-size: .66rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; padding: .48rem 1.05rem; border-radius: 999px; background: var(--forest); color: var(--gold-soft); }
+.al-pill { display: inline-block; font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace; font-size: .66rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; padding: .48rem 1.05rem; border-radius: 999px; background: var(--forest); color: var(--gold-soft); }
 
 .al-card { position: absolute; will-change: transform; }
 .al-card--img { border-radius: 14px; overflow: hidden; box-shadow: 0 26px 60px rgba(31,26,18,.22); margin: 0; }
 .al-card--img img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .al-card--chip { border-radius: 16px; padding: 1.05rem 1.25rem; max-width: 250px; box-shadow: 0 18px 44px rgba(31,26,18,.18); }
 .al-card--chip b { display: block; font-family: "Cormorant Garamond", serif; font-weight: 500; font-size: clamp(1.5rem,2.4vw,2.2rem); line-height: 1.05; margin-bottom: .35rem; }
-.al-card--chip span { font-family: ui-monospace, Menlo, monospace; font-size: .6rem; letter-spacing: .12em; text-transform: uppercase; opacity: .8; display: block; line-height: 1.5; }
+.al-card--chip span { font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace; font-size: .6rem; letter-spacing: .12em; text-transform: uppercase; opacity: .8; display: block; line-height: 1.5; }
 .chip-dark { background: #241C15; color: var(--cream); }
 .chip-dark b { color: var(--gold-soft); }
 .chip-gold { background: #EAD9AE; color: #241C15; }
@@ -538,3 +538,44 @@ body.theme-indigo .site-header.is-scrolled { background: rgba(244,238,226,.94); 
   .sg__center { grid-column: 1 / -1; padding: 3.5rem 0; }
   .sg-card { position: static !important; width: 100% !important; aspect-ratio: 4/3 !important; transform: none !important; }
 }
+
+/* =================== REACH US (design: Vajram Reach Us.dc.html) =================== */
+.ruz { --t: #9A3E26; --t-deep: #7C2F1C; --gold-d: #D89A44; --gold-l: #E9C888; --parch: #F4E4C8; --ink-w: #2A1A12; --taupe: #7A6250;
+  background: #fff; color: var(--ink-w); }
+.ruz-mono { font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace; }
+
+.ruz-hero { position: relative; height: 62vh; min-height: 460px; overflow: hidden; background: var(--ink-w); }
+.ruz-hero__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.ruz-hero__scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(46,16,8,.55) 0%, rgba(46,16,8,.6) 45%, rgba(46,16,8,.85) 100%); }
+.ruz-hero__inner { position: absolute; left: 0; right: 0; bottom: clamp(50px,9vh,90px); z-index: 3; text-align: center; color: var(--parch); padding: 0 clamp(1.4rem,5vw,40px); }
+.ruz-eyebrow { font-size: 12px; letter-spacing: .5em; text-transform: uppercase; color: var(--gold-d); margin-bottom: 18px; }
+.ruz-hero__inner h1 { font-family: "Cormorant Garamond", serif; font-weight: 500; font-size: clamp(2.6rem,7vw,5rem); line-height: 1.05; max-width: 900px; margin: 0 auto; text-wrap: balance; color: var(--parch); }
+.ruz-rule { width: min(260px,60vw); height: 2px; background: linear-gradient(90deg, var(--gold-d), var(--gold-l)); margin: 30px auto 0; transform: scaleX(0); transform-origin: left; animation: ruzDraw 1.2s cubic-bezier(.22,.61,.36,1) .7s forwards; }
+@keyframes ruzDraw { to { transform: scaleX(1); } }
+
+.ruz-grid { display: grid; grid-template-columns: minmax(300px,440px) 1fr; gap: clamp(3rem,7vw,110px); padding: clamp(4.5rem,9vw,130px) clamp(1.4rem,6vw,90px) clamp(5rem,10vw,140px); max-width: 1440px; margin: 0 auto; }
+.ruz-info { display: flex; flex-direction: column; gap: clamp(2rem,4vw,48px); }
+.ruz-k { font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: var(--t); margin: 0 0 12px; font-weight: 500; }
+.ruz-info p:not(.ruz-k) { margin: 0; font-size: 16px; font-weight: 300; line-height: 1.8; color: var(--taupe); }
+.ruz-mail { font-size: 16px; font-weight: 300; color: var(--t-deep); text-decoration: none; border-bottom: 1px solid var(--gold-d); padding-bottom: 3px; transition: color .3s; align-self: flex-start; }
+.ruz-photo { height: 260px; overflow: hidden; margin-top: 10px; }
+.ruz-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+.ruz-form h2 { font-family: "Cormorant Garamond", serif; font-weight: 500; font-size: clamp(2.2rem,4.2vw,3.25rem); line-height: 1.1; color: var(--ink-w); margin: 0 0 clamp(2rem,4vw,44px); }
+.ruz-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+.ruz-fields label { display: flex; flex-direction: column; gap: 10px; }
+.ruz-fields label > span { font-size: 10px; letter-spacing: .24em; text-transform: uppercase; color: var(--taupe); font-weight: 500; }
+.ruz-fields input, .ruz-fields select, .ruz-fields textarea {
+  border: 1px solid rgba(42,26,18,.2); background: #fff; padding: 16px 18px;
+  font-family: "Inter", sans-serif; font-size: 15px; font-weight: 300; color: var(--ink-w);
+  border-radius: 0; transition: border-color .3s ease; }
+.ruz-fields textarea { resize: vertical; }
+.ruz-fields input:focus, .ruz-fields select:focus, .ruz-fields textarea:focus { outline: none; border-color: var(--t); }
+.ruz-full { grid-column: 1 / -1; }
+.ruz-submit { margin-top: 36px; background: var(--t); border: 0; color: var(--parch); padding: 18px 44px; border-radius: 999px; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; cursor: pointer; transition: background .35s ease, transform .3s ease; }
+@media (hover:hover) and (pointer:fine){ .ruz-submit:hover { background: var(--t-deep); } }
+
+/* header over the terracotta hero + map section on white */
+.ruz .map-section { background: var(--cream-2); }
+@media (max-width: 900px) { .ruz-grid { grid-template-columns: 1fr; } .ruz-fields { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) { .ruz-rule { animation: none; transform: scaleX(1); } }

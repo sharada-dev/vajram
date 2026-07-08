@@ -8,9 +8,8 @@ export type NavItem = { label: string; to: string };
 export const NAV: NavItem[] = [
   { label: "Home", to: "/" },
   { label: "Life Events", to: "/life-events" },
-  { label: "Shop", to: "/shop" },
-  { label: "About Us", to: "/about" },
-  { label: "Journals", to: "/journals" },
+  { label: "About", to: "/about" },
+  { label: "Reach Us", to: "/reach-us" },
 ];
 
 export const CONTACT = {

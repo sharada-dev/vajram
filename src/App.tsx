@@ -12,6 +12,7 @@ import ReachUs from "./pages/ReachUs";
 import Shop from "./pages/Shop";
 import Legal from "./pages/Legal";
 import "./styles/site.css";
+import "./styles/design.css";
 
 export default function App() {
   useSmoothScroll();
