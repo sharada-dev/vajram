@@ -1,0 +1,49 @@
+/* ############################################################################
+   LAMP GATE — pull the cord, light the house.
+   ############################################################################ */
+.lamp { position: fixed; inset: 0; z-index: 9600; background: #0e0906; overflow: hidden;
+  display: flex; flex-direction: column; align-items: center; }
+.lamp.is-lit { pointer-events: none; }
+
+/* pendant rig, hung from the top */
+.lamp__rig { position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center;
+  transform-origin: top center; animation: lampSway 5.5s ease-in-out infinite; }
+@keyframes lampSway { 0%,100% { transform: translateX(-50%) rotate(-1.6deg); } 50% { transform: translateX(-50%) rotate(1.6deg); } }
+.lamp__wire { width: 2px; height: clamp(90px, 18vh, 170px); background: linear-gradient(180deg, #3a2a18, #6b4a24); }
+.lamp__pendant { position: relative; }
+
+/* bulb + glow states */
+.lamp__glow { position: absolute; left: 50%; top: 66px; width: 10px; height: 10px; margin: -5px;
+  border-radius: 50%; background: radial-gradient(circle, rgba(255,214,140,.9), rgba(216,154,68,0) 70%);
+  opacity: .12; transform: scale(3); transition: opacity .18s ease, transform .18s ease; }
+.lamp.is-lit .lamp__bulb { fill: #ffd98c; }
+.lamp.is-lit .lamp__glow { opacity: 1; transform: scale(30); transition: opacity .12s ease, transform .8s cubic-bezier(.16,1,.3,1); }
+
+/* cord + knob */
+.lamp__cord { width: 2px; height: 150px; background: linear-gradient(180deg, #6b4a24, #D89A44);
+  transform-origin: top center; }
+.lamp__knob { width: 26px; height: 26px; border-radius: 50%; margin-top: -2px;
+  background: radial-gradient(circle at 35% 30%, #E9C888, #8a5a28 70%);
+  border: 1px solid rgba(233,200,136,.7); cursor: grab; touch-action: none;
+  box-shadow: 0 0 18px rgba(216,154,68,.35); }
+.lamp__knob:active { cursor: grabbing; }
+.lamp__knob:focus-visible { outline: 2px solid var(--gold-soft); outline-offset: 4px; }
+
+/* warm flood that blooms when lit */
+.lamp__flood { position: absolute; inset: -20%;
+  background: radial-gradient(circle at 50% 22%, rgba(255,213,140,.95) 0%, rgba(216,154,68,.55) 28%, rgba(46,22,10,.0) 62%);
+  opacity: 0; transform: scale(.2); transform-origin: 50% 22%; pointer-events: none; }
+.lamp.is-lit .lamp__flood { opacity: 1; transform: scale(1.6);
+  transition: opacity .25s ease, transform 1.1s cubic-bezier(.16,1,.3,1); }
+
+/* copy */
+.lamp__hint { position: absolute; top: calc(clamp(90px,18vh,170px) + 96px + 150px + 70px); left: 50%; transform: translateX(-50%);
+  font-family: var(--mono); font-size: 11px; letter-spacing: .4em; text-transform: uppercase;
+  color: rgba(244,228,200,.55); animation: hintPulse 2.6s ease-in-out infinite; white-space: nowrap; }
+@keyframes hintPulse { 0%,100% { opacity: .45; } 50% { opacity: 1; } }
+.lamp.is-lit .lamp__hint { display: none; }
+.lamp__skip { position: absolute; bottom: 26px; right: 30px; background: none; border: 0;
+  font-family: var(--mono); font-size: 10px; letter-spacing: .26em; text-transform: uppercase;
+  color: rgba(244,228,200,.4); cursor: pointer; transition: color .3s; }
+.lamp__skip:hover { color: var(--gold-soft); }

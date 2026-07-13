@@ -10,9 +10,13 @@ import Journals from "./pages/Journals";
 import Article from "./pages/Article";
 import ReachUs from "./pages/ReachUs";
 import Shop from "./pages/Shop";
+import ShopCategory from "./pages/ShopCategory";
+import ShopProduct from "./pages/ShopProduct";
 import Legal from "./pages/Legal";
 import "./styles/site.css";
 import "./styles/design.css";
+import "./styles/shop.css";
+import "./styles/lamp.css";
 
 export default function App() {
   useSmoothScroll();
@@ -25,6 +29,8 @@ export default function App() {
           <Route path="/life-events" element={<LifeEvents />} />
           <Route path="/life-events/:cat/:slug" element={<VenueDetail />} />
           <Route path="/shop" element={<Shop />} />
+          <Route path="/shop/:category" element={<ShopCategory />} />
+          <Route path="/shop/:category/:slug" element={<ShopProduct />} />
           <Route path="/about" element={<About />} />
           <Route path="/journals" element={<Journals />} />
           <Route path="/journals/:slug" element={<Article />} />

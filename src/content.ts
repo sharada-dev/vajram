@@ -8,9 +8,12 @@ export type NavItem = { label: string; to: string };
 export const NAV: NavItem[] = [
   { label: "Home", to: "/" },
   { label: "Life Events", to: "/life-events" },
+  { label: "Shop", to: "/shop" },
   { label: "About", to: "/about" },
   { label: "Reach Us", to: "/reach-us" },
 ];
+
+export const WHATSAPP = "https://wa.me/9187575085";
 
 export const CONTACT = {
   hours: "Monday – Friday · 8:00 AM – 6:00 PM",
@@ -136,12 +139,89 @@ export const JOURNAL: JournalPost[] = [
     image: `${A}/story-lakshmi.png`,
     excerpt: "In a world that moves fast and favors convenience, true craftsmanship stands still — rooted in patience, precision, and purpose.",
     body: [
-      "In a world that moves fast and favors convenience, true craftsmanship stands still — rooted in patience, precision, and purpose. Artisan work is not just about creating objects; it is about preserving a way of seeing, a lineage of hands that have shaped material into meaning for generations.",
-      "Every Tanjore painting, every carved pillar, every hand-laid tile carries the quiet authority of time. The maker's intent lives in the smallest imperfection — proof that a human, not a machine, was here.",
-      "At Vajram, we collect and care for these objects not as relics behind glass, but as living things — placed in gardens, courtyards and rooms where people gather. Heritage, for us, is not preserved. It is breathed into everyday life.",
+      "In a world that moves fast and favors convenience, true craftsmanship stands still — rooted in patience, precision, and purpose. Artisan work is not just about creating objects; it is about preserving stories, traditions, and a way of life that has been passed down through generations.",
+      "At Vajram, we believe that every handcrafted piece carries a soul. The gentle marks of the maker's hand, the imperfections that make each item unique, and the time invested in its creation all come together to form something deeply meaningful. These are not just products — they are living expressions of heritage. From intricately carved woodwork to handwoven textiles and antique collectibles, each element reflects a legacy of skill and dedication. In a space filled with such craftsmanship, you don't just see beauty — you feel history, culture, and connection.",
+      "Bringing artisan pieces into modern spaces is more than a design choice. It is a conscious effort to honor tradition while creating environments that feel warm, authentic, and grounded. It reminds us to slow down, to appreciate detail, and to value the human touch in everything around us.",
+      "At its heart, artisan craftsmanship is timeless because it speaks to something deeper — a connection between the past and the present, between the creator and the beholder. And in that connection, we find not just beauty, but meaning.",
     ],
   },
 ];
+
+/* ---------------- SHOP ---------------- */
+export type ShopCategory = {
+  slug: string; name: string; tagline: string; image: string;
+  craft: string; facts: { n: string; l: string }[];
+};
+export type Product = {
+  slug: string; cat: string; name: string; image: string;
+  line: string; note: string;
+};
+
+export const SHOP_CATEGORIES: ShopCategory[] = [
+  {
+    slug: "thanjavur-paintings",
+    name: "Thanjavur Paintings",
+    tagline: "Gold leaf, gesso relief, and gods that glow by lamplight.",
+    image: `${A}/cat-thanjavur.png`,
+    craft: "Born in the courts of Thanjavur four centuries ago, these panels are built up in layers — wood, cloth, gesso relief — then finished with beaten gold leaf and inset stones, so the deity catches every flicker of light in the room.",
+    facts: [
+      { n: "22K", l: "gold leaf, beaten by hand" },
+      { n: "5", l: "layers from plank to painting" },
+      { n: "400+", l: "years of court tradition" },
+    ],
+  },
+  {
+    slug: "bali-collection",
+    name: "Bali Collection",
+    tagline: "Volcanic stone, carved slow, worn soft by water.",
+    image: `${A}/cat-bali.png`,
+    craft: "Carved from Indonesian volcanic stone, each fountain and vessel is cut by hand and left for the elements to finish — water and moss slowly turning fresh stone into something that looks like it was always there.",
+    facts: [
+      { n: "1", l: "block of stone per piece" },
+      { n: "0", l: "moulds — every piece unique" },
+      { n: "∞", l: "patina, still deepening" },
+    ],
+  },
+];
+
+export const PRODUCTS: Product[] = [
+  { slug: "gaja-laxmi", cat: "thanjavur-paintings", name: "Gaja Lakshmi", image: `${A}/prod-gaja-laxmi.png`,
+    line: "The goddess of abundance, flanked by elephants in anointment.",
+    note: "Gesso-relief ornament under gold leaf gives the crown and garlands their raised, jewelled surface." },
+  { slug: "gajalakshmi", cat: "thanjavur-paintings", name: "Gajalakshmi", image: `${A}/prod-gajalakshmi.png`,
+    line: "A second telling of the elephant-blessed Lakshmi, in deeper reds.",
+    note: "The reds are ground pigment, not print — no two panels age the same way." },
+  { slug: "lalitha-devi", cat: "thanjavur-paintings", name: "Lalitha Devi", image: `${A}/prod-lalitha-devi.png`,
+    line: "The playful sovereign of the three worlds, enthroned.",
+    note: "Her throne's arches follow temple architecture — the painting is a shrine in miniature." },
+  { slug: "sathyanarayana-swamy", cat: "thanjavur-paintings", name: "Sathyanarayana Swamy", image: `${A}/prod-sathyanarayana.png`,
+    line: "The form of Vishnu invoked at every new beginning.",
+    note: "Traditionally commissioned for housewarmings — a painting meant to preside over a household." },
+  { slug: "venkateswara-swamy", cat: "thanjavur-paintings", name: "Venkateswara Swamy", image: `${A}/prod-venkateswara.png`,
+    line: "The lord of the seven hills, crowned in gold.",
+    note: "The namam and crown carry the heaviest gold work — lamplight finds them first." },
+  { slug: "bhoovaraha-swamy", cat: "thanjavur-paintings", name: "Bhoovaraha Swamy", image: `${A}/prod-bhoovaraha.png`,
+    line: "Varaha lifting the earth from the deep — rescue made visible.",
+    note: "A rarer subject among Thanjavur panels; collectors prize the unusual iconography." },
+  { slug: "baby-krishna-butter-pot", cat: "thanjavur-paintings", name: "Baby Krishna with Butter Pot", image: `${A}/prod-baby-pot-butter.png`,
+    line: "The butter thief mid-mischief, caught and adored.",
+    note: "The most beloved of nursery subjects — painted for children's rooms for generations." },
+  { slug: "krishna-rukmini", cat: "thanjavur-paintings", name: "Krishna & Rukmini", image: `${A}/prod-krishna-rukmini.png`,
+    line: "The divine couple, side by side in court finery.",
+    note: "Paired figures double the relief work — twice the gesso, twice the gold." },
+  { slug: "stone-buddha-fountain", cat: "bali-collection", name: "Stone Buddha Water Fountain", image: `${A}/prod-stone-buddha.png`,
+    line: "A seated Buddha over slow water — stillness with a pulse.",
+    note: "Volcanic stone drinks water dark, then dries pale — the fountain changes with the hour." },
+  { slug: "stone-mini-fountain", cat: "bali-collection", name: "Stone Mini Water Fountain", image: `${A}/prod-stone-mini.png`,
+    line: "A courtyard fountain scaled for a doorstep or a desk.",
+    note: "Small enough for a verandah niche; the sound carries further than its size suggests." },
+  { slug: "stone-pot-fountain", cat: "bali-collection", name: "Stone Pot Water Fountain", image: `${A}/prod-stone-pot.png`,
+    line: "A carved vessel that spills itself, endlessly.",
+    note: "The pot form is cut from a single block — walls, lip and basin in one carve." },
+];
+
+export const productBySlug = (slug?: string) => PRODUCTS.find((p) => p.slug === slug);
+export const categoryBySlug = (slug?: string) => SHOP_CATEGORIES.find((c) => c.slug === slug);
 
 export const HOME = {
   heroEyebrow: "Antiques & Gardens · Bengaluru",

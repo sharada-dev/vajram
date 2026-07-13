@@ -1,10 +1,11 @@
-import { lazy, Suspense, useLayoutEffect, useRef } from "react";
+import { lazy, Suspense, useLayoutEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useReducedMotion } from "framer-motion";
 import { usePageMotion } from "../lib/motion";
 import Magnetic from "../components/Magnetic";
+import LampGate, { shouldShowLamp } from "../components/LampGate";
 import Home from "./Home";
 
 const GoldDust = lazy(() => import("../components/GoldDust"));
@@ -58,6 +59,7 @@ function DesignHome() {
   const root = useRef<HTMLDivElement>(null);
   const fillRef = useRef<HTMLDivElement>(null);
   const railRef = useRef<HTMLDivElement>(null);
+  const [lampOn, setLampOn] = useState(shouldShowLamp);
   usePageMotion(root, []);
 
   useLayoutEffect(() => {
@@ -115,6 +117,7 @@ function DesignHome() {
 
   return (
     <div className="page vd" ref={root}>
+      {lampOn && <LampGate onDone={() => setLampOn(false)} />}
       {/* ============ ACT I · ARRIVAL ============ */}
       <section className="vd-arrival">
         <div className="vd-pin">

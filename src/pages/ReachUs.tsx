@@ -1,5 +1,5 @@
 import { lazy, Suspense, useRef, useState, type FormEvent } from "react";
-import { CONTACT } from "../content";
+import { CONTACT, WHATSAPP } from "../content";
 import { usePageMotion } from "../lib/motion";
 import Magnetic from "../components/Magnetic";
 
@@ -15,19 +15,21 @@ const OCCASIONS = [
   "Workshop or Art Show",
   "Farm Stay",
 ];
+const GUESTS = ["Up to 25", "25 – 50", "50 – 100", "100 – 170"];
+const SLOTS = ["Morning", "Afternoon", "Evening", "Full Day"];
 
 export default function ReachUs() {
   const root = useRef<HTMLDivElement>(null);
   usePageMotion(root, []);
   const [sent, setSent] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", date: "", type: OCCASIONS[0], msg: "" });
+  const [form, setForm] = useState({ name: "", email: "", date: "", type: OCCASIONS[0], guests: GUESTS[0], slot: SLOTS[0], msg: "" });
   const set = (k: keyof typeof form) => (e: { target: { value: string } }) =>
     setForm((f) => ({ ...f, [k]: e.target.value }));
 
   const submit = (e: FormEvent) => {
     e.preventDefault();
     const body = encodeURIComponent(
-      `Name: ${form.name}\nEmail: ${form.email}\nPreferred date: ${form.date}\nOccasion: ${form.type}\n\n${form.msg}`
+      `Name: ${form.name}\nEmail: ${form.email}\nPreferred date: ${form.date}\nOccasion: ${form.type}\nGuests: ${form.guests}\nTime slot: ${form.slot}\n\n${form.msg}`
     );
     window.location.href = `mailto:${CONTACT.email}?subject=${encodeURIComponent("Enquiry — " + form.type)}&body=${body}`;
     setSent(true);
@@ -62,6 +64,10 @@ export default function ReachUs() {
             <p className="ruz-mono ruz-k">Write</p>
             <a className="ruz-mail" href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
           </div>
+          <div data-reveal>
+            <p className="ruz-mono ruz-k">Chat</p>
+            <a className="ruz-mail" href={WHATSAPP} target="_blank" rel="noreferrer">WhatsApp us</a>
+          </div>
           <div className="ruz-photo" data-reveal>
             <img src={`${A}/life/space-02.jpg`} alt="Vajram gardens" loading="lazy" />
           </div>
@@ -87,6 +93,18 @@ export default function ReachUs() {
               <span className="ruz-mono">Occasion</span>
               <select value={form.type} onChange={set("type")}>
                 {OCCASIONS.map((o) => <option key={o}>{o}</option>)}
+              </select>
+            </label>
+            <label>
+              <span className="ruz-mono">Guests</span>
+              <select value={form.guests} onChange={set("guests")}>
+                {GUESTS.map((g) => <option key={g}>{g}</option>)}
+              </select>
+            </label>
+            <label>
+              <span className="ruz-mono">Time Slot</span>
+              <select value={form.slot} onChange={set("slot")}>
+                {SLOTS.map((s) => <option key={s}>{s}</option>)}
               </select>
             </label>
             <label className="ruz-full">
